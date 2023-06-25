@@ -1,5 +1,6 @@
 import logging
 import requests
+import sys
 import os
 from telegram import Bot
 import time
@@ -34,16 +35,9 @@ HOMEWORK_VERDICTS = {
 }
 
 
-REQUIRED_ENV_VARIABLES = ['PRACTICUM_TOKEN', 'TELEGRAM_TOKEN',
-                          'TELEGRAM_CHAT_ID']
-
-
 def check_tokens():
     """Проверка доступности переменных окружения."""
-    for var in REQUIRED_ENV_VARIABLES:
-        if var not in os.environ:
-            raise EnvironmentError(f"Missing required {var}")
-    return True
+    return all([PRACTICUM_TOKEN, TELEGRAM_TOKEN, TELEGRAM_CHAT_ID])
 
 
 def send_message(bot, message):
@@ -106,8 +100,9 @@ def parse_status(homework):
 
 def main():
     """Основная логика работы бота."""
-    if not all([PRACTICUM_TOKEN, TELEGRAM_TOKEN, TELEGRAM_CHAT_ID]):
+    if not check_tokens():
         logger.critical('Отсутствует одна или несколько переменных окружения')
+        sys.exit()
     bot = Bot(token=TELEGRAM_TOKEN)
     timestamp = int(time.time())
     while True:
