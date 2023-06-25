@@ -1,11 +1,12 @@
 import logging
-import requests
-import sys
 import os
-from telegram import Bot
+import sys
 import time
 from http import HTTPStatus
+
+import requests
 from dotenv import load_dotenv
+from telegram import Bot
 
 load_dotenv()
 
@@ -47,7 +48,7 @@ def send_message(bot, message):
         bot.send_message(chat_id, message)
         logger.debug(f'Отправлено сообщение: {message}')
     except Exception:
-        raise Exception('Не удалось отправить сообщение.')
+        raise Exception(f'Не удалось отправить сообщение {message}.')
 
 
 def get_api_answer(timestamp):
@@ -82,7 +83,8 @@ def check_response(response):
     if (homeworks is None or cur_date is None):
         raise KeyError('Ошибка в получении значений словаря.')
     if not isinstance(homeworks, list):
-        raise TypeError('Ответ API не соответствует ожиданиям.')
+        raise TypeError(f'Ответ API: {response}, не соответствует ожиданиям.')
+
     return homeworks
 
 
