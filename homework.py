@@ -109,7 +109,7 @@ def main():
     if not all([PRACTICUM_TOKEN, TELEGRAM_TOKEN, TELEGRAM_CHAT_ID]):
         logger.critical('Отсутствует одна или несколько переменных окружения')
     bot = Bot(token=TELEGRAM_TOKEN)
-    timestamp = '1549962000'
+    timestamp = int(time.time())
     while True:
         try:
             response = get_api_answer(timestamp)
@@ -118,8 +118,7 @@ def main():
                 message = parse_status(homeworks[0])
                 send_message(bot, message)
             else:
-                timestamp = response.get('current_date',
-                                         int(time.time()) - RETRY_PERIOD)
+                timestamp = response.get('current_date')
         except Exception as error:
             logger.error(error)
             message = f'Сбой в работе программы: {error}'
