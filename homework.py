@@ -48,7 +48,7 @@ def send_message(bot, message):
         bot.send_message(chat_id, message)
         logger.debug(f'Отправлено сообщение: {message}')
     except Exception:
-        raise Exception(f'Не удалось отправить сообщение {message}.')
+        raise Exception(f'Не удалось отправить сообщение: {message}')
 
 
 def get_api_answer(timestamp):
